@@ -3,6 +3,7 @@ package hu.unideb.inf.mobilsz12.spotifyzenekitall;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -19,8 +20,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tv = findViewById(R.id.textview);
+        tv = findViewById(R.id.textView);
         OkHttpClient client = new OkHttpClient();
+        tv.setMovementMethod(new ScrollingMovementMethod());
+
 
         Request request = new Request.Builder()
                 .url("https://spotify23.p.rapidapi.com/search/?q=metal3E&type=multi&offset=0&limit=10&numberOfTopResults=5")
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
 
-        client.newCall(request).enqueue(new Callback() {
+      /*  client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -50,6 +53,87 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+*/
+        String Lyric = "Underneath the blackest soil\n" +
+                "I lay down my warm beating heart\n" +
+                "And deep beneath the frozen ground\n" +
+                "I bury down my deepest thoughts\n" +
+                "\n" +
+                "Because the road I've chosen\n" +
+                "Is free of fortune and desire\n" +
+                "Or the mundane toil and worry\n" +
+                "Because the trail I've taken\n" +
+                "Leads down into the darkest shore\n" +
+                "Where the stars have passed away\n" +
+                "\n" +
+                "Tonight, the world is burning\n" +
+                "Black smoke hides the skies\n" +
+                "Dark clouds rise up swirling\n" +
+                "Shadows engulf the land\n" +
+                "\n" +
+                "By the side of forsaken path\n" +
+                "I leave behind my old shadow\n" +
+                "Into the deep under these shores\n" +
+                "I drown my broken memories\n" +
+                "\n" +
+                "For something to change\n" +
+                "Something has to give\n" +
+                "For something to grow\n" +
+                "Something has to yield\n" +
+                "Underneath the blackest soil\n" +
+                "I lay down my warm beating heart\n" +
+                "And deep beneath the frozen ground\n" +
+                "I bury down my deepest thoughts\n" +
+                "\n" +
+                "Because the road I've chosen\n" +
+                "Is free of fortune and desire\n" +
+                "Or the mundane toil and worry\n" +
+                "Because the trail I've taken\n" +
+                "Leads down into the darkest shore\n" +
+                "Where the stars have passed away\n" +
+                "\n" +
+                "Tonight, the world is burning\n" +
+                "Black smoke hides the skies\n" +
+                "Dark clouds rise up swirling\n" +
+                "Shadows engulf the land\n" +
+                "\n" +
+                "By the side of forsaken path\n" +
+                "I leave behind my old shadow\n" +
+                "Into the deep under these shores\n" +
+                "I drown my broken memories\n" +
+                "\n" +
+                "For something to change\n" +
+                "Something has to give\n" +
+                "For something to grow\n" +
+                "Something has to yield\n" +
+                "Underneath the blackest soil\n" +
+                "I lay down my warm beating heart\n" +
+                "And deep beneath the frozen ground\n" +
+                "I bury down my deepest thoughts\n" +
+                "\n" +
+                "Because the road I've chosen\n" +
+                "Is free of fortune and desire\n" +
+                "Or the mundane toil and worry\n" +
+                "Because the trail I've taken\n" +
+                "Leads down into the darkest shore\n" +
+                "Where the stars have passed away\n" +
+                "\n" +
+                "Tonight, the world is burning\n" +
+                "Black smoke hides the skies\n" +
+                "Dark clouds rise up swirling\n" +
+                "Shadows engulf the land\n" +
+                "\n" +
+                "By the side of forsaken path\n" +
+                "I leave behind my old shadow\n" +
+                "Into the deep under these shores\n" +
+                "I drown my broken memories\n" +
+                "\n" +
+                "For something to change\n" +
+                "Something has to give\n" +
+                "For something to grow\n" +
+                "Something has to yield\n" +
+                "I kiss the light goodbye";
 
+        tv.setText(Lyric);
     }
 }
