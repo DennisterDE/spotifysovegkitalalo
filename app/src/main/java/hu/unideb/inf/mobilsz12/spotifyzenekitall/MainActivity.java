@@ -6,6 +6,11 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -21,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     public String urlbuilder (String search)
     {
-        return "https://spotify23.p.rapidapi.com/search/?q="+search+"E&type=artist&offset=0&limit=2&numberOfTopResults=5";
+        return "https://spotify23.p.rapidapi.com/search/?q="+search+"&type=tracks&offset=0&limit=2&numberOfTopResults=5";
     }
 
     @Override
@@ -36,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         Request request = new Request.Builder()
-                .url("https://spotify23.p.rapidapi.com/search/?q="+Start.searchtext+"E&type=artist&offset=0&limit=2&numberOfTopResults=5")
+                .url("https://spotify23.p.rapidapi.com/search/?q="+Start.searchtext+"E&type=tracks&offset=0&limit=2&numberOfTopResults=5")
                 .get()
                 .addHeader("X-RapidAPI-Key", "2e185465a8mshe8ce882fc29b7aep1fc59djsnd64480e1008a")
                 .addHeader("X-RapidAPI-Host", "spotify23.p.rapidapi.com")
@@ -53,11 +58,25 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful())
                 {
-                    String myResponse = response.body().string();
+
+                    String valasz = response.body().string();
+                    try {
+                        JSONObject jsonObject = new JSONObject(valasz);
+
+                        System.out.println(jsonObject.getString("query"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    //JsonNode node = JsonParser.parse(response.body().string());
+
+                    //String nodevalasz = node.fieldNames().toString();
+                    //String myResponse = response.body().string();
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tv.setText(myResponse);
+                           // tv.setText(myResponse);
                         }
                     });
                 }
