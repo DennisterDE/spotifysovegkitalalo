@@ -59,24 +59,13 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful())
                 {
 
-                    String valasz = response.body().string();
-                    try {
-                        JSONObject jsonObject = new JSONObject(valasz);
-
-                        System.out.println(jsonObject.getString("query"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    String lyric = JsonParser.trackLyricParser("1brwdYwjltrJo7WHpIvbYt");
 
 
-                    //JsonNode node = JsonParser.parse(response.body().string());
-
-                    //String nodevalasz = node.fieldNames().toString();
-                    //String myResponse = response.body().string();
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                           // tv.setText(myResponse);
+                            tv.setText(lyric);
                         }
                     });
                 }
