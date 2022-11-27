@@ -21,6 +21,7 @@ public class Start extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+
         searchbox = (EditText) findViewById(R.id.searchinput);
         searchbutton = (Button) findViewById(R.id.searchbutton);
 
