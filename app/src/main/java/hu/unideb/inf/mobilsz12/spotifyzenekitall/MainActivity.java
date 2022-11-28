@@ -1,5 +1,7 @@
 package hu.unideb.inf.mobilsz12.spotifyzenekitall;
 
+import static java.lang.Thread.sleep;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -12,6 +14,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -23,12 +27,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv;
 
 
-
-    public String urlbuilder (String search)
-    {
-        return "https://spotify23.p.rapidapi.com/search/?q="+search+"&type=tracks&offset=0&limit=2&numberOfTopResults=5";
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,18 +35,9 @@ public class MainActivity extends AppCompatActivity {
         OkHttpClient client = new OkHttpClient();
         tv.setMovementMethod(new ScrollingMovementMethod());
 
+        Request searchrequest = SpotifyApi.searchrequest(Start.searchtext);
 
-
-
-        Request request = new Request.Builder()
-                .url("https://spotify23.p.rapidapi.com/search/?q="+Start.searchtext+"E&type=tracks&offset=0&limit=2&numberOfTopResults=5")
-                .get()
-                .addHeader("X-RapidAPI-Key", "2e185465a8mshe8ce882fc29b7aep1fc59djsnd64480e1008a")
-                .addHeader("X-RapidAPI-Host", "spotify23.p.rapidapi.com")
-                .build();
-
-
-        client.newCall(request).enqueue(new Callback() {
+        client.newCall(searchrequest).enqueue((new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -56,21 +45,53 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful())
+
+
+                final String mySearchResponse = response.body().string();
+
+                List<String> songData = JsonParser.randomtrackIdParser(mySearchResponse);
+                List<String> tracklist = new ArrayList<>();
+                tracklist.add(songData.get(1));
+                while (tracklist.size()<4)
                 {
-
-                    String lyric = JsonParser.trackLyricParser("1brwdYwjltrJo7WHpIvbYt");
-
-
-                    MainActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            tv.setText(lyric);
-                        }
-                    });
+                    String newtrackname = JsonParser.otherTrackNameParser(mySearchResponse);
+                    if(!tracklist.contains(newtrackname))
+                    tracklist.add(newtrackname);
                 }
+
+
+
+                System.out.println(songData.get(0));
+
+                Request lyricsRequest = SpotifyApi.lyricrequest(songData.get(0));
+
+                client.newCall(lyricsRequest).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        final String myLyricResponse = response.body().string();
+                        String lyrics = JsonParser.trackLyricParser(myLyricResponse);
+
+                        System.out.println(lyrics);
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                tv.setText(tracklist.toString());
+                            }
+                        });
+
+
+                    }
+                });
+
             }
-        });
+
+
+        }));
 
 
     }
