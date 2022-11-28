@@ -113,8 +113,68 @@ public class MainActivity extends AppCompatActivity {
                         });
 
 
+                        button1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (getbuttontext(view).equals(tracklist.get(0)))
+                                {
+                                    int RGB = android.graphics.Color.argb(255, 0, 255, 0);
+                                    button1.setBackgroundColor(RGB);
+                                }
+                                else
+                                {int RGB = android.graphics.Color.argb(255, 255, 0, 0);
+                                    button1.setBackgroundColor(RGB);
+                                }
+                            }
+                        });
+                        button2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (getbuttontext(view).equals(tracklist.get(0)))
+                                {
+                                    int RGB = android.graphics.Color.argb(255, 0, 255, 0);
+                                    button2.setBackgroundColor(RGB);
+                                }
+                                else
+                                {int RGB = android.graphics.Color.argb(255, 255, 0, 0);
+                                    button2.setBackgroundColor(RGB);
+                                }
+                            }
+                        });
+                        button3.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (getbuttontext(view).equals(tracklist.get(0)))
+                                {
+                                    int RGB = android.graphics.Color.argb(255, 0, 255, 0);
+                                    button3.setBackgroundColor(RGB);
+                                }
+                                else
+                                {int RGB = android.graphics.Color.argb(255, 255, 0, 0);
+                                    button3.setBackgroundColor(RGB);
+                                }
+                            }
+                        });
+                        button4.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (getbuttontext(view).equals(tracklist.get(0)))
+                                {
+                                    int RGB = android.graphics.Color.argb(255, 0, 255, 0);
+                                    button4.setBackgroundColor(RGB);
+                                }
+                                else
+                                {int RGB = android.graphics.Color.argb(255, 255, 0, 0);
+                                    button4.setBackgroundColor(RGB);
+                                }
+                            }
+                        });
+
                     }
                 });
+
+
+
 
             }
 
@@ -125,7 +185,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void checkifanswer(View view) {
+    public String getbuttontext(View view) {
 
+        Button b = (Button)view;
+        String buttonText = b.getText().toString();
+        return  buttonText;
     }
 }
+
+//TODO gomb működjön is
