@@ -10,8 +10,6 @@ import okhttp3.Response;
 
 public class SpotifyApi {
 
-    public String searchresponse;
-    public String lyricresponse;
     public static Request searchrequest(String searchtext) {
 
         Request request = new Request.Builder()

@@ -3,6 +3,7 @@ package hu.unideb.inf.mobilsz12.spotifyzenekitall;
 import static java.lang.Thread.sleep;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.CircularArray;
 
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -26,12 +27,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView tv;
     private Button button1;
     private Button button2;
     private Button button3;
     private Button button4;
+    List<String> tracklist = new ArrayList<>();
 
 
     @Override
@@ -41,18 +43,29 @@ public class MainActivity extends AppCompatActivity {
         tv = findViewById(R.id.textView);
         OkHttpClient client = new OkHttpClient();
         tv.setMovementMethod(new ScrollingMovementMethod());
+
         button1 = findViewById(R.id.buttonSong1);
+        button1.setOnClickListener(this);
+        button1.setEnabled(false);
+
         button2 = findViewById(R.id.buttonSong2);
+        button2.setOnClickListener(this);
+        button2.setEnabled(false);
+
         button3 = findViewById(R.id.buttonSong3);
+        button3.setOnClickListener(this);
+        button3.setEnabled(false);
+
         button4 = findViewById(R.id.buttonSong4);
+        button4.setOnClickListener(this);
+        button4.setEnabled(false);
+
         List<Button> buttonList = new ArrayList<>();
         buttonList.add(button1);
         buttonList.add(button2);
         buttonList.add(button3);
         buttonList.add(button4);
         Random random = new Random();
-
-
 
 
         Request searchrequest = SpotifyApi.searchrequest(Start.searchtext);
@@ -70,13 +83,12 @@ public class MainActivity extends AppCompatActivity {
                 final String mySearchResponse = response.body().string();
 
                 List<String> songData = JsonParser.randomtrackIdParser(mySearchResponse);
-                List<String> tracklist = new ArrayList<>();
+
                 tracklist.add(songData.get(1));
-                while (tracklist.size()<4)
-                {
+                while (tracklist.size() < 4) {
                     String newtrackname = JsonParser.otherTrackNameParser(mySearchResponse);
-                    if(!tracklist.contains(newtrackname))
-                    tracklist.add(newtrackname);
+                    if (!tracklist.contains(newtrackname))
+                        tracklist.add(newtrackname);
                 }
 
                 List<String> tmptracklist = new ArrayList<>();
@@ -103,77 +115,21 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                                 tv.setText(lyrics);
 
-                                for (Button button :buttonList)
-                                {
-                                 int index= random.nextInt(tmptracklist.size());
+                                for (Button button : buttonList) {
+                                    int index = random.nextInt(tmptracklist.size());
                                     button.setText(tmptracklist.get(index));
                                     tmptracklist.remove(index);
                                 }
-                            }
-                        });
+                                button1.setEnabled(true);
+                                button2.setEnabled(true);
+                                button3.setEnabled(true);
+                                button4.setEnabled(true);
 
-
-                        button1.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (getbuttontext(view).equals(tracklist.get(0)))
-                                {
-                                    int RGB = android.graphics.Color.argb(255, 0, 255, 0);
-                                    button1.setBackgroundColor(RGB);
-                                }
-                                else
-                                {int RGB = android.graphics.Color.argb(255, 255, 0, 0);
-                                    button1.setBackgroundColor(RGB);
-                                }
-                            }
-                        });
-                        button2.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (getbuttontext(view).equals(tracklist.get(0)))
-                                {
-                                    int RGB = android.graphics.Color.argb(255, 0, 255, 0);
-                                    button2.setBackgroundColor(RGB);
-                                }
-                                else
-                                {int RGB = android.graphics.Color.argb(255, 255, 0, 0);
-                                    button2.setBackgroundColor(RGB);
-                                }
-                            }
-                        });
-                        button3.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (getbuttontext(view).equals(tracklist.get(0)))
-                                {
-                                    int RGB = android.graphics.Color.argb(255, 0, 255, 0);
-                                    button3.setBackgroundColor(RGB);
-                                }
-                                else
-                                {int RGB = android.graphics.Color.argb(255, 255, 0, 0);
-                                    button3.setBackgroundColor(RGB);
-                                }
-                            }
-                        });
-                        button4.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (getbuttontext(view).equals(tracklist.get(0)))
-                                {
-                                    int RGB = android.graphics.Color.argb(255, 0, 255, 0);
-                                    button4.setBackgroundColor(RGB);
-                                }
-                                else
-                                {int RGB = android.graphics.Color.argb(255, 255, 0, 0);
-                                    button4.setBackgroundColor(RGB);
-                                }
                             }
                         });
 
                     }
                 });
-
-
 
 
             }
@@ -187,10 +143,39 @@ public class MainActivity extends AppCompatActivity {
 
     public String getbuttontext(View view) {
 
-        Button b = (Button)view;
+        Button b = (Button) view;
         String buttonText = b.getText().toString();
-        return  buttonText;
+        return buttonText;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.buttonSong1:
+                setButtonColor(view);
+                break;
+            case R.id.buttonSong2:
+                setButtonColor(view);
+                break;
+            case R.id.buttonSong3:
+                setButtonColor(view);
+                break;
+            case R.id.buttonSong4:
+                setButtonColor(view);
+                break;
+
+        }
+    }
+
+    public void setButtonColor(View button) {
+        if (getbuttontext(button).equals(tracklist.get(0))) {
+            int RGB = android.graphics.Color.argb(255, 0, 255, 0);
+            button.setBackgroundColor(RGB);
+        } else {
+            int RGB = android.graphics.Color.argb(255, 255, 0, 0);
+            button.setBackgroundColor(RGB);
+
+        }
+
     }
 }
-
-//TODO gomb működjön is
